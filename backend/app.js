@@ -2,6 +2,7 @@ const express = require('express');
 const helmet = require('helmet');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const { errors } = require('celebrate');
 
 const { responseMessages } = require('./utils/constants');
 const users = require('./routes/users');
@@ -33,5 +34,6 @@ app.use((req, res, next) => {
 app.use('/users', users);
 app.use('/cards', cards);
 app.use(sendNotFoundMessage);
+app.use(errors());
 
 app.listen(PORT, () => {});

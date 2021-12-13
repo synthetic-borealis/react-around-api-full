@@ -1,0 +1,13 @@
+.profile__avatar {
+  position: relative;
+  display: block;
+  width: 120px;
+  padding-top: 100%;
+  /* background-image: url("../../../images/profile-cousteau.jpg"); */
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 100%;
+  background-color: red;
+  content: "";
+}

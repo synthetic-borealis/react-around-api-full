@@ -1,0 +1,23 @@
+.form__field {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 0 0 30px 0;
+}
+
+.form__field:nth-of-type(2n) {
+  margin-bottom: 48px;
+}
+
+@media screen and (max-width: 800px) {
+  .form__field {
+    padding-bottom: 9px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .form__field:nth-of-type(2n) {
+    margin-bottom: 46px;
+  }
+}

@@ -1,0 +1,13 @@
+.card__image {
+  position: relative;
+  width: 100%;
+  padding-bottom: 100%;
+  display: block;
+  border: 0;
+  /* background-color is present for debugging purposes only */
+  background-color: orange;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+}

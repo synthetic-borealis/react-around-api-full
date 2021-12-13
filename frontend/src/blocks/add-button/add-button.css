@@ -1,0 +1,38 @@
+.add-button {
+  margin-left: auto;
+  position: relative;
+  min-width: 150px;
+  min-height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  border: 2px solid white;
+  border-radius: 2px;
+  transition: opacity .25s linear;
+  cursor: pointer;
+  background-image: url("../../images/icon-add.svg");
+  background-size: 22px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: transparent;
+}
+
+@media screen and (max-width: 1044px) {
+  .add-button {
+    margin: 0;
+    width: calc(880 / 1280 * 100vw);
+    background-size: 16px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .add-button {
+    width: 100%;
+    max-width: 282px;
+  }
+}
+
+.add-button:hover {
+  opacity: .6;
+}

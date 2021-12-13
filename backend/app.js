@@ -8,6 +8,7 @@ const {
   Segments,
   errors,
 } = require('celebrate');
+const rateLimit = require('express-rate-limit');
 
 const { messageStrings } = require('./utils/constants');
 const users = require('./routes/users');
@@ -17,6 +18,19 @@ const auth = require('./middleware/auth');
 
 const { PORT = 3000 } = process.env;
 const app = express();
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // per 15 minutes
+  max: 100,
+});
+
+// Stricter limit for login attempts
+const loginLimiter = rateLimit({
+  windowMs: 10 * 60 * 1000, // per 5 minutes
+  max: 5, // login attempts
+});
+
+app.use(limiter);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -39,7 +53,7 @@ app.post('/signup', celebrate({
     avatar: Joi.string().uri(),
   }),
 }), createUser);
-app.post('/signin', login);
+app.post('/signin', loginLimiter, login);
 
 app.use('/users', auth, users);
 app.use('/cards', auth, cards);

@@ -1,7 +1,8 @@
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
-const { responseMessages } = require('../utils/constants');
+const { messageStrings, tempSecretKey } = require('../utils/constants');
 
 const getAllUsers = (req, res) => {
   User.find({})
@@ -9,7 +10,7 @@ const getAllUsers = (req, res) => {
       res.send(users);
     })
     .catch(() => {
-      res.status(500).send({ message: responseMessages.serverError });
+      res.status(500).send({ message: messageStrings.serverError });
     });
 };
 
@@ -22,15 +23,15 @@ const getUser = (req, res) => {
     .catch((error) => {
       switch (error.name) {
         case 'CastError':
-          res.status(400).send({ message: responseMessages.badRequest });
+          res.status(400).send({ message: messageStrings.badRequest });
           break;
 
         case 'DocumentNotFoundError':
-          res.status(404).send({ message: responseMessages.notFound });
+          res.status(404).send({ message: messageStrings.notFound });
           break;
 
         default:
-          res.status(500).send({ message: responseMessages.serverError });
+          res.status(500).send({ message: messageStrings.serverError });
       }
     });
 };
@@ -45,26 +46,24 @@ const createUser = (req, res) => {
   } = req.body;
 
   bcrypt.hash(password, 10)
-    .then((hash) => {
-      User.create({
-        email,
-        password: hash,
-        name,
-        about,
-        avatar,
-      });
-    })
+    .then((hash) => User.create({
+      email,
+      password: hash,
+      name,
+      about,
+      avatar,
+    }))
     .then((user) => {
       res.send(user);
     })
     .catch((error) => {
       switch (error.name) {
         case 'ValidationError':
-          res.status(400).send({ message: responseMessages.badRequest });
+          res.status(400).send({ message: messageStrings.badRequest });
           break;
 
         default:
-          res.status(500).send({ message: responseMessages.serverError });
+          res.status(500).send({ message: messageStrings.serverError });
       }
     });
 };
@@ -81,15 +80,15 @@ const updateUserProfile = (req, res) => {
     .catch((error) => {
       switch (error.name) {
         case 'CastError':
-          res.status(400).send({ message: responseMessages.badRequest });
+          res.status(400).send({ message: messageStrings.badRequest });
           break;
 
         case 'DocumentNotFoundError':
-          res.status(404).send({ message: responseMessages.notFound });
+          res.status(404).send({ message: messageStrings.notFound });
           break;
 
         default:
-          res.status(500).send({ message: responseMessages.serverError });
+          res.status(500).send({ message: messageStrings.serverError });
       }
     });
 };
@@ -106,16 +105,30 @@ const updateUserAvatar = (req, res) => {
     .catch((error) => {
       switch (error.name) {
         case 'ValidationError':
-          res.status(400).send({ message: responseMessages.badRequest });
+          res.status(400).send({ message: messageStrings.badRequest });
           break;
 
         case 'CastError':
-          res.status(400).send({ message: responseMessages.badRequest });
+          res.status(400).send({ message: messageStrings.badRequest });
           break;
 
         default:
-          res.status(500).send({ message: responseMessages.serverError });
+          res.status(500).send({ message: messageStrings.serverError });
       }
+    });
+};
+
+const login = (req, res) => {
+  const { email, password } = req.body;
+
+  User.findUserByCredentials(email, password)
+    .then((user) => {
+      const token = jwt.sign({ _id: user._id }, tempSecretKey);
+
+      res.send({ token });
+    })
+    .catch((error) => {
+      res.status(401).send({ message: error.message });
     });
 };
 
@@ -125,4 +138,5 @@ module.exports = {
   createUser,
   updateUserProfile,
   updateUserAvatar,
+  login,
 };

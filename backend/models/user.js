@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const isEmail = require('validator/lib/isEmail');
-const { urlRegex } = require('../utils/constants');
+const bcrypt = require('bcrypt');
+
+const { urlRegex, messageStrings } = require('../utils/constants');
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -42,5 +44,16 @@ const userSchema = new mongoose.Schema({
     default: 'https://pictures.s3.yandex.net/resources/avatar_1604080799.jpg',
   },
 });
+
+userSchema.statics.findUserByCredentials = function findUserByCredentials(email, password) {
+  return this.findOne({ email })
+    .then((user) => {
+      if (!user) {
+        return Promise.reject(new Error(messageStrings.badCredentials));
+      }
+
+      return bcrypt.compare(password, user.password);
+    });
+};
 
 module.exports = mongoose.model('user', userSchema);

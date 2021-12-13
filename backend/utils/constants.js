@@ -1,7 +1,8 @@
 const urlRegex = /^https?:\/{2}(www\.)?[a-z\0-9]{2,256}\.[a-z]{2,6}(\/[a-z0-9._~:/?%#[\]@!$&'()*+,;=]*)?/i;
 
-const responseMessages = {
+const messageStrings = {
   // Error Messages
+  badCredentials: 'Incorrect email or password',
   notFound: 'Requested resource not found',
   badRequest: 'Bad request',
   serverError: 'An error has occured on the server',
@@ -10,4 +11,6 @@ const responseMessages = {
   cardDeleted: 'The card has been deleted',
 };
 
-module.exports = { urlRegex, responseMessages };
+const tempSecretKey = 'some-secret-key';
+
+module.exports = { urlRegex, messageStrings, tempSecretKey };

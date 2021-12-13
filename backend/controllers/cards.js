@@ -1,5 +1,5 @@
 const Card = require('../models/card');
-const { responseMessages } = require('../utils/constants');
+const { messageStrings } = require('../utils/constants');
 
 const getAllCards = (req, res) => {
   Card.find({})
@@ -9,7 +9,7 @@ const getAllCards = (req, res) => {
       res.send(cards);
     })
     .catch(() => {
-      res.status(500).send({ message: responseMessages.serverError });
+      res.status(500).send({ message: messageStrings.serverError });
     });
 };
 
@@ -26,11 +26,11 @@ const createCard = (req, res) => {
     .catch((error) => {
       switch (error.name) {
         case 'ValidationError':
-          res.status(400).send({ message: responseMessages.badRequest });
+          res.status(400).send({ message: messageStrings.badRequest });
           break;
 
         default:
-          res.status(500).send({ message: responseMessages.serverError });
+          res.status(500).send({ message: messageStrings.serverError });
       }
     });
 };
@@ -43,27 +43,27 @@ const deleteCard = (req, res) => {
     .orFail()
     .then((card) => {
       if (card.owner._id.toString() !== userId) {
-        res.status(403).send({ message: responseMessages.unauthorized });
+        res.status(403).send({ message: messageStrings.unauthorized });
         return;
       }
 
       Card.findByIdAndDelete(cardId)
         .then(() => {
-          res.send({ message: responseMessages.cardDeleted });
+          res.send({ message: messageStrings.cardDeleted });
         });
     })
     .catch((error) => {
       switch (error.name) {
         case 'CastError':
-          res.status(400).send({ message: responseMessages.badRequest });
+          res.status(400).send({ message: messageStrings.badRequest });
           break;
 
         case 'DocumentNotFoundError':
-          res.status(404).send({ message: responseMessages.notFound });
+          res.status(404).send({ message: messageStrings.notFound });
           break;
 
         default:
-          res.status(500).send({ message: responseMessages.serverError });
+          res.status(500).send({ message: messageStrings.serverError });
       }
     });
 };
@@ -86,15 +86,15 @@ const likeCard = (req, res) => {
     .catch((error) => {
       switch (error.name) {
         case 'CastError':
-          res.status(400).send({ message: responseMessages.badRequest });
+          res.status(400).send({ message: messageStrings.badRequest });
           break;
 
         case 'DocumentNotFoundError':
-          res.status(404).send({ message: responseMessages.notFound });
+          res.status(404).send({ message: messageStrings.notFound });
           break;
 
         default:
-          res.status(500).send({ message: responseMessages.serverError });
+          res.status(500).send({ message: messageStrings.serverError });
       }
     });
 };
@@ -117,15 +117,15 @@ const unlikeCard = (req, res) => {
     .catch((error) => {
       switch (error.name) {
         case 'CastError':
-          res.status(400).send({ message: responseMessages.badRequest });
+          res.status(400).send({ message: messageStrings.badRequest });
           break;
 
         case 'DocumentNotFoundError':
-          res.status(404).send({ message: responseMessages.notFound });
+          res.status(404).send({ message: messageStrings.notFound });
           break;
 
         default:
-          res.status(500).send({ message: responseMessages.serverError });
+          res.status(500).send({ message: messageStrings.serverError });
       }
     });
 };

@@ -6,7 +6,7 @@ const messageStrings = {
   notFound: 'Requested resource not found',
   badRequest: 'Bad request',
   serverError: 'An error has occured on the server',
-  unauthorized: 'Unauthorized user or action',
+  unauthorized: 'Unauthorized action',
   // Other Responses
   cardDeleted: 'The card has been deleted',
 };

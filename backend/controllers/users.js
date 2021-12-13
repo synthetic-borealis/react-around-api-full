@@ -14,8 +14,31 @@ const getAllUsers = (req, res) => {
     });
 };
 
-const getUser = (req, res) => {
+// Gets another user's profile
+const getUserById = (req, res) => {
   User.findById(req.params.id)
+    .orFail()
+    .then((user) => {
+      res.send(user);
+    })
+    .catch((error) => {
+      switch (error.name) {
+        case 'CastError':
+          res.status(400).send({ message: messageStrings.badRequest });
+          break;
+
+        case 'DocumentNotFoundError':
+          res.status(404).send({ message: messageStrings.notFound });
+          break;
+
+        default:
+          res.status(500).send({ message: messageStrings.serverError });
+      }
+    });
+};
+
+const getCurrentUser = (req, res) => {
+  User.findById(req.user._id)
     .orFail()
     .then((user) => {
       res.send(user);
@@ -123,7 +146,7 @@ const login = (req, res) => {
 
   User.findUserByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, tempSecretKey);
+      const token = jwt.sign({ _id: user._id }, tempSecretKey, { expiresIn: '7d' });
 
       res.send({ token });
     })
@@ -134,7 +157,8 @@ const login = (req, res) => {
 
 module.exports = {
   getAllUsers,
-  getUser,
+  getUserById,
+  getCurrentUser,
   createUser,
   updateUserProfile,
   updateUserAvatar,

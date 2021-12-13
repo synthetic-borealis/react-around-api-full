@@ -13,6 +13,7 @@ const { messageStrings } = require('./utils/constants');
 const users = require('./routes/users');
 const cards = require('./routes/cards');
 const { createUser, login } = require('./controllers/users');
+const auth = require('./middleware/auth');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -29,14 +30,6 @@ const sendNotFoundMessage = (req, res, next) => {
 
 app.use(helmet());
 
-app.use((req, res, next) => {
-  req.user = {
-    // _id: 'longFurby',
-    _id: '61a4a152c6b4bc521792c492',
-  };
-  next();
-});
-
 app.post('/signup', celebrate({
   [Segments.BODY]: Joi.object().keys({
     email: Joi.string().required().email(),
@@ -48,8 +41,8 @@ app.post('/signup', celebrate({
 }), createUser);
 app.post('/signin', login);
 
-app.use('/users', users);
-app.use('/cards', cards);
+app.use('/users', auth, users);
+app.use('/cards', auth, cards);
 app.use(sendNotFoundMessage);
 app.use(errors());
 

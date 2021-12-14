@@ -68,6 +68,7 @@ const routePaths = {
   logout: '/logout',
   userInfo: '/users/me',
   userAvatar: '/users/me/avatar',
+  cards: '/cards',
 };
 
 // API Options

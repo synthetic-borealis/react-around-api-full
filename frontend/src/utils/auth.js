@@ -58,10 +58,22 @@ const updateUserAvatar = (token, avatar) => {
   .then(_authHandleResponse);
 };
 
+const getCards = (token) => {
+  return fetch(`${baseUrl}${routePaths.cards}`, {
+    method: 'GET',
+    headers: {
+      ...baseHeaders,
+      'Authorization': `Bearer ${token}`,
+    },
+  })
+  .then(_authHandleResponse);
+};
+
 export {
   signup,
   signin,
   getUserData,
   updateUserInfo,
   updateUserAvatar,
+  getCards,
 };

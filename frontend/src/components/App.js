@@ -136,9 +136,9 @@ function App() {
       .finally(() => setIsTooltipOpen(true));
   }
 
-  function getInitialCardData() {
-    api.getInitialCards()
-    .then((cardData) => setCards([...cardData]))
+  function getCards() {
+    auth.getCards(jwt)
+    .then((res) => setCards([...res.data]))
     .catch(console.log);
   }
 
@@ -152,7 +152,7 @@ function App() {
           auth.getUserData(res.token)
             .then((user) => {
               setCurrentUser(user.data);
-              getInitialCardData();
+              getCards();
               history.push(routePaths.root);
             });
         } else {
@@ -195,7 +195,7 @@ function App() {
         .then((res) => {
           if (res.data) {
             setCurrentUser(res.data);
-            getInitialCardData();
+            getCards();
             setIsLoggedIn(true);
             history.push(routePaths.root);
           } else {

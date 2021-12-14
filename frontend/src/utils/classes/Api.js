@@ -38,12 +38,12 @@ class Api {
   //     .then(this._handleResponse);
   // }
 
-  getInitialCards() {
-    return fetch(`${this._baseUrl}/cards`, {
-      headers: this._headers,
-    })
-      .then(this._handleResponse);
-  }
+  // getInitialCards() {
+  //   return fetch(`${this._baseUrl}/cards`, {
+  //     headers: this._headers,
+  //   })
+  //     .then(this._handleResponse);
+  // }
 
   changeLikeStatus(cardId, isLiked) {
     return fetch(`${this._baseUrl}/cards/likes/${cardId}`, {

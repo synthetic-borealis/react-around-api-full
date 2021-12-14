@@ -33,8 +33,6 @@ import React from 'react';
 function App() {
   const [jwt, setJwt] = React.useState(localStorage.getItem('jwt') ? localStorage.getItem('jwt') : '');
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-  const [currentUserInfo, setCurrentUserInfo] = React.useState({}); // Temporary while the old API is still in use
-  const currentUserEmail = currentUserInfo.email ? currentUserInfo.email : '';
 
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
@@ -125,7 +123,6 @@ function App() {
   function handleRegister({email, password}) {
     auth.signup(email, password)
       .then((res) => {
-        // console.log(JSON.stringify(res));
         if (res.data) {
           setCurrentTooltip({message: tooltipMessages.success, isSuccessful: true});
         } else {
@@ -139,15 +136,25 @@ function App() {
       .finally(() => setIsTooltipOpen(true));
   }
 
+  function getInitialCardData() {
+    api.getInitialCards()
+    .then((cardData) => setCards([...cardData]))
+    .catch(console.log);
+  }
+
   function handleLogin({email, password}) {
     auth.signin(email, password)
-      .then((loginRes) => {
-        if (loginRes.token) {
-          localStorage.setItem('jwt', loginRes.token);
-          setJwt(loginRes.token);
-          setCurrentUserInfo({email})
+      .then((res) => {
+        if (res.token) {
+          localStorage.setItem('jwt', res.token);
+          setJwt(res.token);
           setIsLoggedIn(true);
-          history.push(routePaths.root);
+          auth.getUserData(res.token)
+            .then((user) => {
+              setCurrentUser(user.data);
+              getInitialCardData();
+              history.push(routePaths.root);
+            });
         } else {
           throw new Error(`Login error`);
         }
@@ -177,15 +184,18 @@ function App() {
     localStorage.removeItem('jwt');
     setJwt('');
     setIsLoggedIn(false);
+    setCurrentUser({});
+    setCards([]);
   }
 
-  function verifyLocallyStoredToken() {
+  React.useEffect(() => {
     // Ensure locally stored token is valid
     if (jwt.length > 0) {
-      auth.checkToken(jwt)
+      auth.getUserData(jwt)
         .then((res) => {
           if (res.data) {
-            setCurrentUserInfo(res.data);
+            setCurrentUser(res.data);
+            getInitialCardData();
             setIsLoggedIn(true);
             history.push(routePaths.root);
           } else {
@@ -195,24 +205,6 @@ function App() {
         })
         .catch(console.log);
     }
-  }
-
-  function getInitialCardData() {
-    api.getInitialCards()
-    .then((initialCards) => setCards([...initialCards]))
-    .catch(console.log);
-  }
-
-  function getUserData() {
-    api.getUserData().then(setCurrentUser).catch(console.log);
-  }
-
-  React.useEffect(() => {
-    verifyLocallyStoredToken();
-
-    // Ensure API request for user information & cards data is only made once
-    getInitialCardData();
-    getUserData();
 
     // eslint warns about missing dependencies that don't seem to be
     // neccessary for this hook to work.
@@ -236,7 +228,7 @@ function App() {
             <Register onSubmit={handleRegister} />
           </Route>
           <ProtectedRoute path="/" isLoggedIn={isLoggedIn}>
-            <Header linkText="Log Out" linkPath={routePaths.logout} currentScreen="main" userEmail={currentUserEmail} />
+            <Header linkText="Log Out" linkPath={routePaths.logout} currentScreen="main" userEmail={currentUser.email} />
             <Main
               onEditProfileClick={handleEditProfileClick}
               onEditAvatarClick={handleEditAvatarClick}

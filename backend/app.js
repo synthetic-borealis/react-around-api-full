@@ -30,12 +30,6 @@ const limiter = rateLimit({
   max: 100,
 });
 
-// Stricter limit for login attempts
-const loginLimiter = rateLimit({
-  windowMs: 10 * 60 * 1000, // per 5 minutes
-  max: 5, // login attempts
-});
-
 app.use(limiter);
 
 app.use(bodyParser.json());
@@ -59,7 +53,7 @@ app.post('/signup', celebrate({
     avatar: Joi.string().uri(),
   }),
 }), createUser);
-app.post('/signin', loginLimiter, celebrate({
+app.post('/signin', celebrate({
   [Segments.BODY]: Joi.object().keys({
     email: Joi.string().required().email(),
     password: Joi.string().required().min(8),

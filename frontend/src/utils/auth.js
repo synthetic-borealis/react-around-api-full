@@ -23,7 +23,7 @@ const signin = (email, password) => {
   .then(_authHandleResponse);
 };
 
-const checkToken = (token) => {
+const getUserData = (token) => {
   return fetch(`${baseUrl}${routePaths.userInfo}`, {
     method: 'GET',
     headers: {
@@ -37,5 +37,5 @@ const checkToken = (token) => {
 export {
   signup,
   signin,
-  checkToken,
+  getUserData,
 };

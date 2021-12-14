@@ -22,7 +22,11 @@ router.patch('/me/avatar', celebrate({
     avatar: Joi.string().required().custom(validateUrl),
   }),
 }), updateUserAvatar);
-router.get('/:id', getUserById);
+router.get('/:id', celebrate({
+  [Segments.PARAMS]: Joi.object().keys({
+    id: Joi.string().hex().required().length(24),
+  }),
+}), getUserById);
 router.get('/', getAllUsers);
 
 module.exports = router;

@@ -13,6 +13,7 @@ A back-end for the Around the U.S. web-site.
 - Mongoose
 
 ## Running the Project
+- `npm run gen-env` — generate a .env file (run this before launching the server).
 - `npm run start` — to launch the server.
 - `npm run dev` — to launch the server with the hot reload feature.
 

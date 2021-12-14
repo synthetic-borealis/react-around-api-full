@@ -22,8 +22,8 @@ require('dotenv').config();
 const { PORT = 3000 } = process.env;
 const app = express();
 
-app.use(cors());
 app.options('*', cors());
+app.use(cors());
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // per 15 minutes

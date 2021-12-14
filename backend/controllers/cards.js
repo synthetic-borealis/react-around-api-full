@@ -6,7 +6,7 @@ const getAllCards = (req, res) => {
     .populate('owner')
     .populate('likes')
     .then((cards) => {
-      res.send(cards);
+      res.send({ data: cards });
     })
     .catch(() => {
       res.status(500).send({ message: messageStrings.serverError });
@@ -20,7 +20,7 @@ const createCard = (req, res) => {
     .then((card) => {
       Card.populate(card, { path: 'owner' })
         .then(() => {
-          res.send(card);
+          res.send({ data: card });
         });
     })
     .catch((error) => {
@@ -81,7 +81,7 @@ const likeCard = (req, res) => {
     .populate('owner')
     .populate('likes')
     .then((card) => {
-      res.send(card);
+      res.send({ data: card });
     })
     .catch((error) => {
       switch (error.name) {
@@ -112,7 +112,7 @@ const unlikeCard = (req, res) => {
     .populate('owner')
     .populate('likes')
     .then((card) => {
-      res.send(card);
+      res.send({ data: card });
     })
     .catch((error) => {
       switch (error.name) {

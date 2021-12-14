@@ -7,7 +7,7 @@ const { messageStrings, secretKey } = require('../utils/constants');
 const getAllUsers = (req, res) => {
   User.find({})
     .then((users) => {
-      res.send(users);
+      res.send({ data: users });
     })
     .catch(() => {
       res.status(500).send({ message: messageStrings.serverError });
@@ -19,7 +19,7 @@ const getUserById = (req, res) => {
   User.findById(req.params.id)
     .orFail()
     .then((user) => {
-      res.send(user);
+      res.send({ data: user });
     })
     .catch((error) => {
       switch (error.name) {
@@ -41,7 +41,7 @@ const getCurrentUser = (req, res) => {
   User.findById(req.user._id)
     .orFail()
     .then((user) => {
-      res.send(user);
+      res.send({ data: user });
     })
     .catch((error) => {
       switch (error.name) {
@@ -77,7 +77,7 @@ const createUser = (req, res) => {
       avatar,
     }))
     .then((user) => {
-      res.send(user);
+      res.status(201).send({ data: user });
     })
     .catch((error) => {
       switch (error.name) {
@@ -98,7 +98,7 @@ const updateUserProfile = (req, res) => {
   User.findByIdAndUpdate(userId, { name, about }, { new: true, runValidators: true })
     .orFail()
     .then((user) => {
-      res.send(user);
+      res.send({ data: user });
     })
     .catch((error) => {
       switch (error.name) {
@@ -123,7 +123,7 @@ const updateUserAvatar = (req, res) => {
   User.findByIdAndUpdate(userId, { avatar }, { new: true, runValidators: true })
     .orFail()
     .then((user) => {
-      res.send(user);
+      res.send({ data: user });
     })
     .catch((error) => {
       switch (error.name) {

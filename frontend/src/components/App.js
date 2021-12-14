@@ -125,6 +125,7 @@ function App() {
   function handleRegister({email, password}) {
     auth.signup(email, password)
       .then((res) => {
+        // console.log(JSON.stringify(res));
         if (res.data) {
           setCurrentTooltip({message: tooltipMessages.success, isSuccessful: true});
         } else {

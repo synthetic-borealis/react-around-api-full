@@ -98,10 +98,11 @@ function App() {
   function handleCardLike(card) {
     const isLiked = card.likes.some(i => i._id === currentUser._id);
 
-    api.changeLikeStatus(card._id, !isLiked).then((newCard) => {
-      setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
-    })
-    .catch(console.log);
+    auth.setCardLikeStatus(jwt, card._id, !isLiked)
+      .then((res) => {
+        setCards((state) => state.map((c) => c._id === card._id ? res.data : c));
+      })
+      .catch(console.log);
   }
 
   function handleAddPlaceSubmit(card) {

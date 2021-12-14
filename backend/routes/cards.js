@@ -17,8 +17,8 @@ router.post('/', celebrate({
     link: Joi.string().required().custom(validateUrl),
   }),
 }), createCard);
-router.delete('/:cardId', deleteCard);
 router.put('/:cardId/likes', likeCard);
 router.delete('/:cardId/likes', unlikeCard);
+router.delete('/:cardId', deleteCard);
 
 module.exports = router;

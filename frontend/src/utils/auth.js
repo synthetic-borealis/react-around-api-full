@@ -69,6 +69,17 @@ const getCards = (token) => {
   .then(_authHandleResponse);
 };
 
+const setCardLikeStatus = (token, cardId, isLiked) => {
+  return fetch(`${baseUrl}${routePaths.cards}/${cardId}/likes`, {
+    method: isLiked ? 'PUT' : 'DELETE',
+    headers: {
+      ...baseHeaders,
+      'Authorization': `Bearer ${token}`,
+    },
+  })
+  .then(_authHandleResponse);
+};
+
 export {
   signup,
   signin,
@@ -76,4 +87,5 @@ export {
   updateUserInfo,
   updateUserAvatar,
   getCards,
+  setCardLikeStatus,
 };

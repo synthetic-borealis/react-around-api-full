@@ -17,8 +17,20 @@ router.post('/', celebrate({
     link: Joi.string().required().custom(validateUrl),
   }),
 }), createCard);
-router.put('/:cardId/likes', likeCard);
-router.delete('/:cardId/likes', unlikeCard);
-router.delete('/:cardId', deleteCard);
+router.put('/:cardId/likes', celebrate({
+  [Segments.PARAMS]: Joi.object().keys({
+    cardId: Joi.string().hex().required().length(24),
+  }),
+}), likeCard);
+router.delete('/:cardId/likes', celebrate({
+  [Segments.PARAMS]: Joi.object().keys({
+    cardId: Joi.string().hex().required().length(24),
+  }),
+}), unlikeCard);
+router.delete('/:cardId', celebrate({
+  [Segments.PARAMS]: Joi.object().keys({
+    cardId: Joi.string().hex().required().length(24),
+  }),
+}), deleteCard);
 
 module.exports = router;

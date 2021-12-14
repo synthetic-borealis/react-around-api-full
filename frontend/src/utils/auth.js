@@ -92,6 +92,17 @@ const setCardLikeStatus = (token, cardId, isLiked) => {
   .then(_authHandleResponse);
 };
 
+const removeCard = (token, cardId) => {
+  return fetch(`${baseUrl}${routePaths.cards}/${cardId}`, {
+    method: 'DELETE',
+    headers: {
+      ...baseHeaders,
+      'Authorization': `Bearer ${token}`,
+    },
+  })
+  .then(_authHandleResponse);
+};
+
 export {
   signup,
   signin,
@@ -101,4 +112,5 @@ export {
   getCards,
   addCard,
   setCardLikeStatus,
+  removeCard,
 };

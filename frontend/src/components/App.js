@@ -17,8 +17,7 @@ import Logout from './Logout';
 // Contexts
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
-// Misc. Utils
-import api from '../utils/api';
+// API requests
 import * as auth from '../utils/auth';
 
 // Constants
@@ -115,10 +114,11 @@ function App() {
   }
 
   function handleCardDelete(card) {
-    api.removeCard(card._id).then(() => {
-      setCards((state) => state.filter((c) => c._id !== card._id));
-    })
-    .catch(console.log);
+    auth.removeCard(jwt, card._id)
+      .then(() => {
+        setCards((state) => state.filter((c) => c._id !== card._id));
+      })
+      .catch(console.log);
   }
 
   function handleRegister({email, password}) {

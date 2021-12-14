@@ -67,10 +67,12 @@ const routePaths = {
   signin: '/signin',
   logout: '/logout',
   userInfo: '/users/me',
+  userAvatar: '/users/me/avatar',
+  cards: '/cards',
 };
 
 // API Options
-const baseUrl = 'https://register.nomoreparties.co';
+const baseUrl = 'http://localhost:3000';
 const baseHeaders = {
   'Accept': 'application/json',
   'Content-Type': 'application/json'

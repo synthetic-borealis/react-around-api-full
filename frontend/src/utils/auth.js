@@ -18,12 +18,12 @@ const signin = (email, password) => {
   return fetch(`${baseUrl}${routePaths.signin}`, {
     method: 'POST',
     headers: baseHeaders,
-    body: JSON.stringify({email, password}),
+    body: JSON.stringify({ email, password }),
   })
   .then(_authHandleResponse);
 };
 
-const checkToken = (token) => {
+const getUserData = (token) => {
   return fetch(`${baseUrl}${routePaths.userInfo}`, {
     method: 'GET',
     headers: {
@@ -34,8 +34,83 @@ const checkToken = (token) => {
   .then(_authHandleResponse);
 };
 
+const updateUserInfo = (token, { name, about }) => {
+  return fetch(`${baseUrl}${routePaths.userInfo}`, {
+    method: 'PATCH',
+    headers: {
+      ...baseHeaders,
+      'Authorization': `Bearer ${token}`,
+    },
+    body: JSON.stringify({ name, about }),
+  })
+  .then(_authHandleResponse);
+};
+
+const updateUserAvatar = (token, avatar) => {
+  return fetch(`${baseUrl}${routePaths.userAvatar}`, {
+    method: 'PATCH',
+    headers: {
+      ...baseHeaders,
+      'Authorization': `Bearer ${token}`,
+    },
+    body: JSON.stringify({ avatar }),
+  })
+  .then(_authHandleResponse);
+};
+
+const getCards = (token) => {
+  return fetch(`${baseUrl}${routePaths.cards}`, {
+    method: 'GET',
+    headers: {
+      ...baseHeaders,
+      'Authorization': `Bearer ${token}`,
+    },
+  })
+  .then(_authHandleResponse);
+};
+
+const addCard = (token, { name, link }) => {
+  return fetch(`${baseUrl}${routePaths.cards}`, {
+    method: 'POST',
+    headers: {
+      ...baseHeaders,
+      'Authorization': `Bearer ${token}`,
+    },
+    body: JSON.stringify({ name, link }),
+  })
+  .then(_authHandleResponse);
+};
+
+const setCardLikeStatus = (token, cardId, isLiked) => {
+  return fetch(`${baseUrl}${routePaths.cards}/${cardId}/likes`, {
+    method: isLiked ? 'PUT' : 'DELETE',
+    headers: {
+      ...baseHeaders,
+      'Authorization': `Bearer ${token}`,
+    },
+  })
+  .then(_authHandleResponse);
+};
+
+const removeCard = (token, cardId) => {
+  return fetch(`${baseUrl}${routePaths.cards}/${cardId}`, {
+    method: 'DELETE',
+    headers: {
+      ...baseHeaders,
+      'Authorization': `Bearer ${token}`,
+    },
+  })
+  .then(_authHandleResponse);
+};
+
 export {
   signup,
   signin,
-  checkToken,
+  getUserData,
+  updateUserInfo,
+  updateUserAvatar,
+  getCards,
+  addCard,
+  setCardLikeStatus,
+  removeCard,
 };

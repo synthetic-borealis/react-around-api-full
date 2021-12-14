@@ -17,8 +17,7 @@ import Logout from './Logout';
 // Contexts
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
-// Misc. Utils
-import api from '../utils/api';
+// API requests
 import * as auth from '../utils/auth';
 
 // Constants
@@ -33,8 +32,6 @@ import React from 'react';
 function App() {
   const [jwt, setJwt] = React.useState(localStorage.getItem('jwt') ? localStorage.getItem('jwt') : '');
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-  const [currentUserInfo, setCurrentUserInfo] = React.useState({}); // Temporary while the old API is still in use
-  const currentUserEmail = currentUserInfo.email ? currentUserInfo.email : '';
 
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
@@ -80,18 +77,18 @@ function App() {
   }
 
   function handleUpdateUser(user) {
-    api.updateUserInfo(user)
-    .then((userData) => {
-      setCurrentUser(userData);
-      closeAllPopups();
-    })
-    .catch(console.log);
+    auth.updateUserInfo(jwt, user)
+      .then((res) => {
+        setCurrentUser(res.data);
+        closeAllPopups();
+      })
+      .catch(console.log);
   }
 
   function handleUpdateAvatar({avatar}) {
-    api.updateUserAvatar(avatar)
-      .then((userData) => {
-        setCurrentUser(userData);
+    auth.updateUserAvatar(jwt, avatar)
+      .then((res) => {
+        setCurrentUser(res.data);
         closeAllPopups();
       })
       .catch(console.log);
@@ -100,26 +97,28 @@ function App() {
   function handleCardLike(card) {
     const isLiked = card.likes.some(i => i._id === currentUser._id);
 
-    api.changeLikeStatus(card._id, !isLiked).then((newCard) => {
-      setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
-    })
-    .catch(console.log);
+    auth.setCardLikeStatus(jwt, card._id, !isLiked)
+      .then((res) => {
+        setCards((state) => state.map((c) => c._id === card._id ? res.data : c));
+      })
+      .catch(console.log);
   }
 
   function handleAddPlaceSubmit(card) {
-    return api.addCard(card)
-      .then((newCard) => {
-        setCards([newCard, ...cards]);
+    return auth.addCard(jwt, card)
+      .then((res) => {
+        setCards([res.data, ...cards]);
         closeAllPopups();
       })
       .catch(console.log);
   }
 
   function handleCardDelete(card) {
-    api.removeCard(card._id).then(() => {
-      setCards((state) => state.filter((c) => c._id !== card._id));
-    })
-    .catch(console.log);
+    auth.removeCard(jwt, card._id)
+      .then(() => {
+        setCards((state) => state.filter((c) => c._id !== card._id));
+      })
+      .catch(console.log);
   }
 
   function handleRegister({email, password}) {
@@ -138,15 +137,25 @@ function App() {
       .finally(() => setIsTooltipOpen(true));
   }
 
+  function getCards(token) {
+    auth.getCards(token)
+      .then((res) => setCards([...res.data]))
+      .catch(console.log);
+  }
+
   function handleLogin({email, password}) {
     auth.signin(email, password)
-      .then((loginRes) => {
-        if (loginRes.token) {
-          localStorage.setItem('jwt', loginRes.token);
-          setJwt(loginRes.token);
-          setCurrentUserInfo({email})
+      .then((res) => {
+        if (res.token) {
+          localStorage.setItem('jwt', res.token);
+          setJwt(res.token);
           setIsLoggedIn(true);
-          history.push(routePaths.root);
+          auth.getUserData(res.token)
+            .then((user) => {
+              setCurrentUser(user.data);
+              getCards(res.token);
+              history.push(routePaths.root);
+            });
         } else {
           throw new Error(`Login error`);
         }
@@ -176,15 +185,18 @@ function App() {
     localStorage.removeItem('jwt');
     setJwt('');
     setIsLoggedIn(false);
+    setCurrentUser({});
+    setCards([]);
   }
 
-  function verifyLocallyStoredToken() {
+  React.useEffect(() => {
     // Ensure locally stored token is valid
     if (jwt.length > 0) {
-      auth.checkToken(jwt)
+      auth.getUserData(jwt)
         .then((res) => {
           if (res.data) {
-            setCurrentUserInfo(res.data);
+            setCurrentUser(res.data);
+            getCards(jwt);
             setIsLoggedIn(true);
             history.push(routePaths.root);
           } else {
@@ -194,24 +206,6 @@ function App() {
         })
         .catch(console.log);
     }
-  }
-
-  function getInitialCardData() {
-    api.getInitialCards()
-    .then((initialCards) => setCards([...initialCards]))
-    .catch(console.log);
-  }
-
-  function getUserData() {
-    api.getUserData().then(setCurrentUser).catch(console.log);
-  }
-
-  React.useEffect(() => {
-    verifyLocallyStoredToken();
-
-    // Ensure API request for user information & cards data is only made once
-    getInitialCardData();
-    getUserData();
 
     // eslint warns about missing dependencies that don't seem to be
     // neccessary for this hook to work.
@@ -235,7 +229,7 @@ function App() {
             <Register onSubmit={handleRegister} />
           </Route>
           <ProtectedRoute path="/" isLoggedIn={isLoggedIn}>
-            <Header linkText="Log Out" linkPath={routePaths.logout} currentScreen="main" userEmail={currentUserEmail} />
+            <Header linkText="Log Out" linkPath={routePaths.logout} currentScreen="main" userEmail={currentUser.email} />
             <Main
               onEditProfileClick={handleEditProfileClick}
               onEditAvatarClick={handleEditAvatarClick}

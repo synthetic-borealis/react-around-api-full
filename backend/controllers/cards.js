@@ -1,74 +1,51 @@
 const Card = require('../models/card');
-const { responseMessages } = require('../utils/constants');
+const NotFoundError = require('../errors/not-found-err');
+const UnauthorizedError = require('../errors/unauthorized-err');
+const { messageStrings } = require('../utils/constants');
 
-const getAllCards = (req, res) => {
+const getAllCards = (req, res, next) => {
   Card.find({})
     .populate('owner')
     .populate('likes')
     .then((cards) => {
-      res.send(cards);
+      res.send({ data: cards });
     })
-    .catch(() => {
-      res.status(500).send({ message: responseMessages.serverError });
-    });
+    .catch(next);
 };
 
-const createCard = (req, res) => {
+const createCard = (req, res, next) => {
   const { name, link } = req.body;
 
   Card.create({ name, link, owner: req.user._id })
     .then((card) => {
       Card.populate(card, { path: 'owner' })
         .then(() => {
-          res.send(card);
+          res.send({ data: card });
         });
     })
-    .catch((error) => {
-      switch (error.name) {
-        case 'ValidationError':
-          res.status(400).send({ message: responseMessages.badRequest });
-          break;
-
-        default:
-          res.status(500).send({ message: responseMessages.serverError });
-      }
-    });
+    .catch(next);
 };
 
-const deleteCard = (req, res) => {
+const deleteCard = (req, res, next) => {
   const { cardId } = req.params;
   const userId = req.user._id;
 
   Card.findById(cardId)
-    .orFail()
+    .orFail(new NotFoundError())
     .then((card) => {
       if (card.owner._id.toString() !== userId) {
-        res.status(403).send({ message: responseMessages.unauthorized });
-        return;
+        throw new UnauthorizedError();
       }
 
       Card.findByIdAndDelete(cardId)
         .then(() => {
-          res.send({ message: responseMessages.cardDeleted });
+          res.send({ message: messageStrings.cardDeleted });
         });
     })
-    .catch((error) => {
-      switch (error.name) {
-        case 'CastError':
-          res.status(400).send({ message: responseMessages.badRequest });
-          break;
-
-        case 'DocumentNotFoundError':
-          res.status(404).send({ message: responseMessages.notFound });
-          break;
-
-        default:
-          res.status(500).send({ message: responseMessages.serverError });
-      }
-    });
+    .catch(next);
 };
 
-const likeCard = (req, res) => {
+const likeCard = (req, res, next) => {
   const { cardId } = req.params;
   const userId = req.user._id;
 
@@ -77,29 +54,16 @@ const likeCard = (req, res) => {
     { $addToSet: { likes: userId } },
     { new: true },
   )
-    .orFail()
+    .orFail(new NotFoundError())
     .populate('owner')
     .populate('likes')
     .then((card) => {
-      res.send(card);
+      res.send({ data: card });
     })
-    .catch((error) => {
-      switch (error.name) {
-        case 'CastError':
-          res.status(400).send({ message: responseMessages.badRequest });
-          break;
-
-        case 'DocumentNotFoundError':
-          res.status(404).send({ message: responseMessages.notFound });
-          break;
-
-        default:
-          res.status(500).send({ message: responseMessages.serverError });
-      }
-    });
+    .catch(next);
 };
 
-const unlikeCard = (req, res) => {
+const unlikeCard = (req, res, next) => {
   const { cardId } = req.params;
   const userId = req.user._id;
 
@@ -108,26 +72,13 @@ const unlikeCard = (req, res) => {
     { $pull: { likes: userId } },
     { new: true },
   )
-    .orFail()
+    .orFail(new NotFoundError())
     .populate('owner')
     .populate('likes')
     .then((card) => {
-      res.send(card);
+      res.send({ data: card });
     })
-    .catch((error) => {
-      switch (error.name) {
-        case 'CastError':
-          res.status(400).send({ message: responseMessages.badRequest });
-          break;
-
-        case 'DocumentNotFoundError':
-          res.status(404).send({ message: responseMessages.notFound });
-          break;
-
-        default:
-          res.status(500).send({ message: responseMessages.serverError });
-      }
-    });
+    .catch(next);
 };
 
 module.exports = {

@@ -32,6 +32,7 @@ const limiter = rateLimit({
   max: 100,
 });
 
+app.use(requestLogger);
 app.use(limiter);
 
 app.use(bodyParser.json());
@@ -40,8 +41,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 mongoose.connect('mongodb://localhost:27017/aroundb');
 
 app.use(helmet());
-
-app.use(requestLogger);
 
 app.get('/crash-test', () => {
   setTimeout(() => {

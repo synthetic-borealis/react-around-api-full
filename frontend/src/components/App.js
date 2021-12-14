@@ -106,9 +106,9 @@ function App() {
   }
 
   function handleAddPlaceSubmit(card) {
-    return api.addCard(card)
-      .then((newCard) => {
-        setCards([newCard, ...cards]);
+    return auth.addCard(jwt, card)
+      .then((res) => {
+        setCards([res.data, ...cards]);
         closeAllPopups();
       })
       .catch(console.log);

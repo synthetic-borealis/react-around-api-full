@@ -69,6 +69,18 @@ const getCards = (token) => {
   .then(_authHandleResponse);
 };
 
+const addCard = (token, { name, link }) => {
+  return fetch(`${baseUrl}${routePaths.cards}`, {
+    method: 'POST',
+    headers: {
+      ...baseHeaders,
+      'Authorization': `Bearer ${token}`,
+    },
+    body: JSON.stringify({ name, link }),
+  })
+  .then(_authHandleResponse);
+};
+
 const setCardLikeStatus = (token, cardId, isLiked) => {
   return fetch(`${baseUrl}${routePaths.cards}/${cardId}/likes`, {
     method: isLiked ? 'PUT' : 'DELETE',
@@ -87,5 +99,6 @@ export {
   updateUserInfo,
   updateUserAvatar,
   getCards,
+  addCard,
   setCardLikeStatus,
 };

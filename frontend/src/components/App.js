@@ -78,18 +78,18 @@ function App() {
   }
 
   function handleUpdateUser(user) {
-    api.updateUserInfo(user)
-    .then((userData) => {
-      setCurrentUser(userData);
-      closeAllPopups();
-    })
-    .catch(console.log);
+    auth.updateUserInfo(jwt, user)
+      .then((res) => {
+        setCurrentUser(res.data);
+        closeAllPopups();
+      })
+      .catch(console.log);
   }
 
   function handleUpdateAvatar({avatar}) {
-    api.updateUserAvatar(avatar)
-      .then((userData) => {
-        setCurrentUser(userData);
+    auth.updateUserAvatar(jwt, avatar)
+      .then((res) => {
+        setCurrentUser(res.data);
         closeAllPopups();
       })
       .catch(console.log);

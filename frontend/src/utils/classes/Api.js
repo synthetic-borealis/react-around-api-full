@@ -8,35 +8,35 @@ class Api {
     return res.ok ? res.json() : Promise.reject(`Error: ${res.status}`);
   }
 
-  getUserData() {
-    return fetch(`${this._baseUrl}/users/me`, {
-      headers: this._headers,
-    })
-      .then(this._handleResponse);
-  }
+  // getUserData() {
+  //   return fetch(`${this._baseUrl}/users/me`, {
+  //     headers: this._headers,
+  //   })
+  //     .then(this._handleResponse);
+  // }
 
-  updateUserInfo({name, about}) {
-    return fetch(`${this._baseUrl}/users/me`, {
-      method: "PATCH",
-      headers: this._headers,
-      body: JSON.stringify({
-        name,
-        about
-      })
-    })
-      .then(this._handleResponse);
-  }
+  // updateUserInfo({name, about}) {
+  //   return fetch(`${this._baseUrl}/users/me`, {
+  //     method: "PATCH",
+  //     headers: this._headers,
+  //     body: JSON.stringify({
+  //       name,
+  //       about
+  //     })
+  //   })
+  //     .then(this._handleResponse);
+  // }
 
-  updateUserAvatar(avatarLink) {
-    return fetch(`${this._baseUrl}/users/me/avatar`, {
-      method: "PATCH",
-      headers: this._headers,
-      body: JSON.stringify({
-        avatar: avatarLink
-      })
-    })
-      .then(this._handleResponse);
-  }
+  // updateUserAvatar(avatarLink) {
+  //   return fetch(`${this._baseUrl}/users/me/avatar`, {
+  //     method: "PATCH",
+  //     headers: this._headers,
+  //     body: JSON.stringify({
+  //       avatar: avatarLink
+  //     })
+  //   })
+  //     .then(this._handleResponse);
+  // }
 
   getInitialCards() {
     return fetch(`${this._baseUrl}/cards`, {

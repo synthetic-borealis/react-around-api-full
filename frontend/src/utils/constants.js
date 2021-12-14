@@ -67,6 +67,7 @@ const routePaths = {
   signin: '/signin',
   logout: '/logout',
   userInfo: '/users/me',
+  userAvatar: '/users/me/avatar',
 };
 
 // API Options

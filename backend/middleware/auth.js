@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken');
-const { messageStrings, secretKey } = require('../utils/constants');
-
-const handleAuthError = (res) => res.status(403).send({ message: messageStrings.unauthorized });
+const UnauthorizedError = require('../errors/unauthorized-err');
+const { secretKey } = require('../utils/constants');
 
 const extractBearerToken = (header) => header.replace('Bearer ', '');
 
@@ -9,7 +8,7 @@ const auth = (req, res, next) => {
   const { authorization } = req.headers;
 
   if (!authorization || !authorization.startsWith('Bearer ')) {
-    return handleAuthError(res);
+    return next(new UnauthorizedError());
   }
 
   const token = extractBearerToken(authorization);
@@ -18,7 +17,7 @@ const auth = (req, res, next) => {
   try {
     payload = jwt.verify(token, secretKey);
   } catch (error) {
-    return handleAuthError(res);
+    return next(new UnauthorizedError());
   }
 
   req.user = payload;

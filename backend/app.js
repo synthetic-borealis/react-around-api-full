@@ -16,6 +16,7 @@ const users = require('./routes/users');
 const cards = require('./routes/cards');
 const { createUser, login } = require('./controllers/users');
 const auth = require('./middleware/auth');
+const error = require('./middleware/error');
 
 require('dotenv').config();
 
@@ -44,6 +45,12 @@ const sendNotFoundMessage = (req, res, next) => {
 
 app.use(helmet());
 
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Server will crash now');
+  }, 0);
+});
+
 app.post('/signup', celebrate({
   [Segments.BODY]: Joi.object().keys({
     email: Joi.string().required().email(),
@@ -64,5 +71,6 @@ app.use('/users', auth, users);
 app.use('/cards', auth, cards);
 app.use(sendNotFoundMessage);
 app.use(errors());
+app.use(error);
 
 app.listen(PORT, () => {});

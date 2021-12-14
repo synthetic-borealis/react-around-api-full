@@ -2,64 +2,37 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
-const { messageStrings, secretKey } = require('../utils/constants');
+const { secretKey } = require('../utils/constants');
+const NotFoundError = require('../errors/not-found-err');
 
-const getAllUsers = (req, res) => {
+const getAllUsers = (req, res, next) => {
   User.find({})
     .then((users) => {
       res.send({ data: users });
     })
-    .catch(() => {
-      res.status(500).send({ message: messageStrings.serverError });
-    });
+    .catch(next);
 };
 
 // Gets another user's profile
-const getUserById = (req, res) => {
+const getUserById = (req, res, next) => {
   User.findById(req.params.id)
-    .orFail()
+    .orFail(new NotFoundError())
     .then((user) => {
       res.send({ data: user });
     })
-    .catch((error) => {
-      switch (error.name) {
-        case 'CastError':
-          res.status(400).send({ message: messageStrings.badRequest });
-          break;
-
-        case 'DocumentNotFoundError':
-          res.status(404).send({ message: messageStrings.notFound });
-          break;
-
-        default:
-          res.status(500).send({ message: messageStrings.serverError });
-      }
-    });
+    .catch(next);
 };
 
-const getCurrentUser = (req, res) => {
+const getCurrentUser = (req, res, next) => {
   User.findById(req.user._id)
-    .orFail()
+    .orFail(new NotFoundError())
     .then((user) => {
       res.send({ data: user });
     })
-    .catch((error) => {
-      switch (error.name) {
-        case 'CastError':
-          res.status(400).send({ message: messageStrings.badRequest });
-          break;
-
-        case 'DocumentNotFoundError':
-          res.status(404).send({ message: messageStrings.notFound });
-          break;
-
-        default:
-          res.status(500).send({ message: messageStrings.serverError });
-      }
-    });
+    .catch(next);
 };
 
-const createUser = (req, res) => {
+const createUser = (req, res, next) => {
   const {
     email,
     password,
@@ -79,69 +52,34 @@ const createUser = (req, res) => {
     .then((user) => {
       res.status(201).send({ data: user });
     })
-    .catch((error) => {
-      switch (error.name) {
-        case 'ValidationError':
-          res.status(400).send({ message: messageStrings.badRequest });
-          break;
-
-        default:
-          res.status(500).send({ message: messageStrings.serverError });
-      }
-    });
+    .catch(next);
 };
 
-const updateUserProfile = (req, res) => {
+const updateUserProfile = (req, res, next) => {
   const { name, about } = req.body;
   const userId = req.user._id;
 
   User.findByIdAndUpdate(userId, { name, about }, { new: true, runValidators: true })
-    .orFail()
+    .orFail(new NotFoundError())
     .then((user) => {
       res.send({ data: user });
     })
-    .catch((error) => {
-      switch (error.name) {
-        case 'CastError':
-          res.status(400).send({ message: messageStrings.badRequest });
-          break;
-
-        case 'DocumentNotFoundError':
-          res.status(404).send({ message: messageStrings.notFound });
-          break;
-
-        default:
-          res.status(500).send({ message: messageStrings.serverError });
-      }
-    });
+    .catch(next);
 };
 
-const updateUserAvatar = (req, res) => {
+const updateUserAvatar = (req, res, next) => {
   const { avatar } = req.body;
   const userId = req.user._id;
 
   User.findByIdAndUpdate(userId, { avatar }, { new: true, runValidators: true })
-    .orFail()
+    .orFail(new NotFoundError())
     .then((user) => {
       res.send({ data: user });
     })
-    .catch((error) => {
-      switch (error.name) {
-        case 'ValidationError':
-          res.status(400).send({ message: messageStrings.badRequest });
-          break;
-
-        case 'CastError':
-          res.status(400).send({ message: messageStrings.badRequest });
-          break;
-
-        default:
-          res.status(500).send({ message: messageStrings.serverError });
-      }
-    });
+    .catch(next);
 };
 
-const login = (req, res) => {
+const login = (req, res, next) => {
   const { email, password } = req.body;
 
   User.findUserByCredentials(email, password)
@@ -150,9 +88,7 @@ const login = (req, res) => {
 
       res.send({ token });
     })
-    .catch((error) => {
-      res.status(401).send({ message: error.message });
-    });
+    .catch(next);
 };
 
 module.exports = {

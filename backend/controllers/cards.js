@@ -1,19 +1,19 @@
 const Card = require('../models/card');
+const NotFoundError = require('../errors/not-found-err');
+const UnauthorizedError = require('../errors/unauthorized-err');
 const { messageStrings } = require('../utils/constants');
 
-const getAllCards = (req, res) => {
+const getAllCards = (req, res, next) => {
   Card.find({})
     .populate('owner')
     .populate('likes')
     .then((cards) => {
       res.send({ data: cards });
     })
-    .catch(() => {
-      res.status(500).send({ message: messageStrings.serverError });
-    });
+    .catch(next);
 };
 
-const createCard = (req, res) => {
+const createCard = (req, res, next) => {
   const { name, link } = req.body;
 
   Card.create({ name, link, owner: req.user._id })
@@ -23,28 +23,18 @@ const createCard = (req, res) => {
           res.send({ data: card });
         });
     })
-    .catch((error) => {
-      switch (error.name) {
-        case 'ValidationError':
-          res.status(400).send({ message: messageStrings.badRequest });
-          break;
-
-        default:
-          res.status(500).send({ message: messageStrings.serverError });
-      }
-    });
+    .catch(next);
 };
 
-const deleteCard = (req, res) => {
+const deleteCard = (req, res, next) => {
   const { cardId } = req.params;
   const userId = req.user._id;
 
   Card.findById(cardId)
-    .orFail()
+    .orFail(new NotFoundError())
     .then((card) => {
       if (card.owner._id.toString() !== userId) {
-        res.status(403).send({ message: messageStrings.unauthorized });
-        return;
+        throw new UnauthorizedError();
       }
 
       Card.findByIdAndDelete(cardId)
@@ -52,23 +42,10 @@ const deleteCard = (req, res) => {
           res.send({ message: messageStrings.cardDeleted });
         });
     })
-    .catch((error) => {
-      switch (error.name) {
-        case 'CastError':
-          res.status(400).send({ message: messageStrings.badRequest });
-          break;
-
-        case 'DocumentNotFoundError':
-          res.status(404).send({ message: messageStrings.notFound });
-          break;
-
-        default:
-          res.status(500).send({ message: messageStrings.serverError });
-      }
-    });
+    .catch(next);
 };
 
-const likeCard = (req, res) => {
+const likeCard = (req, res, next) => {
   const { cardId } = req.params;
   const userId = req.user._id;
 
@@ -77,29 +54,16 @@ const likeCard = (req, res) => {
     { $addToSet: { likes: userId } },
     { new: true },
   )
-    .orFail()
+    .orFail(new NotFoundError())
     .populate('owner')
     .populate('likes')
     .then((card) => {
       res.send({ data: card });
     })
-    .catch((error) => {
-      switch (error.name) {
-        case 'CastError':
-          res.status(400).send({ message: messageStrings.badRequest });
-          break;
-
-        case 'DocumentNotFoundError':
-          res.status(404).send({ message: messageStrings.notFound });
-          break;
-
-        default:
-          res.status(500).send({ message: messageStrings.serverError });
-      }
-    });
+    .catch(next);
 };
 
-const unlikeCard = (req, res) => {
+const unlikeCard = (req, res, next) => {
   const { cardId } = req.params;
   const userId = req.user._id;
 
@@ -108,26 +72,13 @@ const unlikeCard = (req, res) => {
     { $pull: { likes: userId } },
     { new: true },
   )
-    .orFail()
+    .orFail(new NotFoundError())
     .populate('owner')
     .populate('likes')
     .then((card) => {
       res.send({ data: card });
     })
-    .catch((error) => {
-      switch (error.name) {
-        case 'CastError':
-          res.status(400).send({ message: messageStrings.badRequest });
-          break;
-
-        case 'DocumentNotFoundError':
-          res.status(404).send({ message: messageStrings.notFound });
-          break;
-
-        default:
-          res.status(500).send({ message: messageStrings.serverError });
-      }
-    });
+    .catch(next);
 };
 
 module.exports = {

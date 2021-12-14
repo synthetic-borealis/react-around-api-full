@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
 const isEmail = require('validator/lib/isEmail');
 const bcrypt = require('bcrypt');
+const BadCredentialsError = require('../errors/bad-credentials-err');
 
-const { urlRegex, messageStrings } = require('../utils/constants');
+const { urlRegex } = require('../utils/constants');
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -50,13 +51,13 @@ userSchema.statics.findUserByCredentials = function findUserByCredentials(email,
   return this.findOne({ email }).select('+password')
     .then((user) => {
       if (!user) {
-        return Promise.reject(new Error(messageStrings.badCredentials));
+        throw new BadCredentialsError();
       }
 
       return bcrypt.compare(password, user.password)
         .then((res) => {
           if (!res) {
-            return Promise.reject(new Error(messageStrings.badCredentials));
+            throw new BadCredentialsError();
           }
           return user;
         });

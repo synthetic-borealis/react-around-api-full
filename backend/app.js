@@ -9,6 +9,7 @@ const {
   errors,
 } = require('celebrate');
 const rateLimit = require('express-rate-limit');
+const cors = require('cors');
 
 const { messageStrings } = require('./utils/constants');
 const users = require('./routes/users');
@@ -16,8 +17,13 @@ const cards = require('./routes/cards');
 const { createUser, login } = require('./controllers/users');
 const auth = require('./middleware/auth');
 
+require('dotenv').config();
+
 const { PORT = 3000 } = process.env;
 const app = express();
+
+app.use(cors());
+app.options('*', cors());
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // per 15 minutes

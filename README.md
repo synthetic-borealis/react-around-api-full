@@ -32,13 +32,15 @@ Around the U.S. is an image sharing site for travellers, complete with a backend
   <img src="./screenshots/Screenshot_PC2.png" alt="Laptop screenshot" width="80%">
   <figcaption>Fig. 2: Login screen (Firefox, P.C.).</figcaption>
 </figure>
+<br>
 <figure>
-  <img src="./screenshots/Screenshot_Mobile1.jpg" alt="Laptop screenshot" width="30%">
-  <img src="./screenshots/Screenshot_Mobile2.jpg" alt="Laptop screenshot" width="30%">
-  <img src="./screenshots/Screenshot_Mobile3.jpg" alt="Laptop screenshot" width="30%">
-  <figcaption>Fig. 3: Mobile view (Samsung Internet).</figcaption>
+   <p float="left">
+      <img src="./screenshots/Screenshot_Mobile1.jpg" alt="Laptop screenshot" width="30%">
+      <img src="./screenshots/Screenshot_Mobile2.jpg" alt="Laptop screenshot" width="30%">
+      <img src="./screenshots/Screenshot_Mobile3.jpg" alt="Laptop screenshot" width="30%">
+   </p>
+   <figcaption>Fig. 3: Mobile view (Samsung Internet).</figcaption>
 </figure>
-<figure>
 
 ## Links
 ### Project Related

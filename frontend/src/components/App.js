@@ -137,10 +137,10 @@ function App() {
       .finally(() => setIsTooltipOpen(true));
   }
 
-  function getCards() {
-    auth.getCards(jwt)
-    .then((res) => setCards([...res.data]))
-    .catch(console.log);
+  function getCards(token) {
+    auth.getCards(token)
+      .then((res) => setCards([...res.data]))
+      .catch(console.log);
   }
 
   function handleLogin({email, password}) {
@@ -153,7 +153,7 @@ function App() {
           auth.getUserData(res.token)
             .then((user) => {
               setCurrentUser(user.data);
-              getCards();
+              getCards(res.token);
               history.push(routePaths.root);
             });
         } else {
@@ -196,7 +196,7 @@ function App() {
         .then((res) => {
           if (res.data) {
             setCurrentUser(res.data);
-            getCards();
+            getCards(jwt);
             setIsLoggedIn(true);
             history.push(routePaths.root);
           } else {

@@ -53,7 +53,12 @@ app.post('/signup', celebrate({
     avatar: Joi.string().uri(),
   }),
 }), createUser);
-app.post('/signin', loginLimiter, login);
+app.post('/signin', loginLimiter, celebrate({
+  [Segments.BODY]: Joi.object().keys({
+    email: Joi.string().required().email(),
+    password: Joi.string().required().min(8),
+  }),
+}), login);
 
 app.use('/users', auth, users);
 app.use('/cards', auth, cards);

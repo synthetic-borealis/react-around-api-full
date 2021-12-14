@@ -72,17 +72,10 @@ const routePaths = {
 };
 
 // API Options
-const baseUrl = 'http://localhost:3000';
+const baseUrl = 'https://api.synthetic-borealis.students.nomoreparties.site';
 const baseHeaders = {
   'Accept': 'application/json',
   'Content-Type': 'application/json'
-};
-const apiOptions = {
-  baseUrl: 'https://around.nomoreparties.co/v1/group-12',
-  headers: {
-    authorization: 'd93b3a72-c2aa-468d-b021-56b5e633ed52',
-    'Content-Type': 'application/json'
-  },
 };
 
 // Container Selectors
@@ -117,7 +110,6 @@ export {
   routePaths,
   baseUrl,
   baseHeaders,
-  apiOptions,
   confirmContainerSelector,
   placesContainerSelector,
   editContainerSelector,

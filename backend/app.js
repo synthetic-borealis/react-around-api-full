@@ -11,12 +11,13 @@ const {
 const rateLimit = require('express-rate-limit');
 const cors = require('cors');
 
-const { messageStrings } = require('./utils/constants');
 const users = require('./routes/users');
 const cards = require('./routes/cards');
 const { createUser, login } = require('./controllers/users');
 const auth = require('./middleware/auth');
 const error = require('./middleware/error');
+const { requestLogger, errorLogger } = require('./middleware/logger');
+const notFoundRoutes = require('./middleware/not-found-routes');
 
 require('dotenv').config();
 
@@ -38,12 +39,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 mongoose.connect('mongodb://localhost:27017/aroundb');
 
-const sendNotFoundMessage = (req, res, next) => {
-  res.status(404).send({ message: messageStrings.notFound });
-  next();
-};
-
 app.use(helmet());
+
+app.use(requestLogger);
 
 app.get('/crash-test', () => {
   setTimeout(() => {
@@ -69,7 +67,9 @@ app.post('/signin', celebrate({
 
 app.use('/users', auth, users);
 app.use('/cards', auth, cards);
-app.use(sendNotFoundMessage);
+app.use(notFoundRoutes);
+
+app.use(errorLogger);
 app.use(errors());
 app.use(error);
 

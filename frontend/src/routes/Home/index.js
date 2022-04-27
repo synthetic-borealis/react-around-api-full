@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
-import Card from './Card';
+import Card from '../../components/Card';
 
-function Main(props) {
+function Home(props) {
   const currentUser = React.useContext(CurrentUserContext);
 
   return (
@@ -55,4 +55,4 @@ function Main(props) {
   );
 }
 
-export default Main;
+export default Home;

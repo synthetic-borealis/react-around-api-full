@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import {
   formClassList as formClasses,
   routePaths
-} from "../utils/constants";
+} from "../../utils/constants";
 
 const CredentialSection = (props) => {
   const [email, setEmail] = React.useState('');

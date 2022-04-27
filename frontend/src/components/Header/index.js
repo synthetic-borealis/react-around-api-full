@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import HeaderMenu from './HeaderMenu';
-import { menuClasses, menuTransitionDuration, maxTabletWidth } from '../utils/constants';
-import logoImage from '../images/logo.svg';
+import HeaderMenu from '../HeaderMenu';
+import { menuClasses, menuTransitionDuration, maxTabletWidth } from '../../utils/constants';
+import logoImage from '../../images/logo.svg';
 
 function Header(props) {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);

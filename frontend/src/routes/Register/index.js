@@ -1,4 +1,4 @@
-import CredentialSection from './CredentialSection';
+import CredentialSection from '../../components/CredentialSection';
 
 const Register = (props) => {
   return (

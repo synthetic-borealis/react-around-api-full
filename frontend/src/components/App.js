@@ -1,5 +1,5 @@
 // Components
-import { Route, Switch, useHistory } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute';
 import Header from './Header';
 import Main from './Main';
@@ -45,7 +45,7 @@ function App() {
   const [currentTooltip, setCurrentTooltip] = React.useState({message: '', isSuccessful: true});
   const [selectedCard, setSelectedCard] = React.useState({});
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   function closeAllPopups() {
     setIsTooltipOpen(false);
@@ -154,7 +154,7 @@ function App() {
             .then((user) => {
               setCurrentUser(user.data);
               getCards(res.token);
-              history.push(routePaths.root);
+              navigate(routePaths.root);
             });
         } else {
           throw new Error(`Login error`);
@@ -198,7 +198,7 @@ function App() {
             setCurrentUser(res.data);
             getCards(jwt);
             setIsLoggedIn(true);
-            history.push(routePaths.root);
+            navigate(routePaths.root);
           } else {
             localStorage.removeItem('jwt');
             setJwt('');
@@ -216,33 +216,43 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page-container">
-        <Switch>
-          <ProtectedRoute path={routePaths.logout} isLoggedIn={isLoggedIn}>
-            <Logout onLogout={() => handleLogout()} isLoggedIn={isLoggedIn} history={history} />
-          </ProtectedRoute>
-          <Route path={routePaths.signin}>
-            <Header linkText="Sign up" linkPath={routePaths.signup} currentScreen="login" />
-            <Login onSubmit={handleLogin} />
-          </Route>
-          <Route path={routePaths.signup}>
-            <Header linkText="Log in" linkPath={routePaths.signin} currentScreen="signup" />
-            <Register onSubmit={handleRegister} />
-          </Route>
-          <ProtectedRoute path="/" isLoggedIn={isLoggedIn}>
-            <Header linkText="Log Out" linkPath={routePaths.logout} currentScreen="main" userEmail={currentUser.email} />
-            <Main
-              onEditProfileClick={handleEditProfileClick}
-              onEditAvatarClick={handleEditAvatarClick}
-              onAddPlaceClick={handleAddPlaceClick}
-              cards={cards}
-              onCardClick={handleCardClick}
-              onCardLike={handleCardLike}
-              onCardDelete={handleCardDelete}
-            />
-            <Footer />
+        <Routes>
+          <Route path={routePaths.logout} element={
+            <ProtectedRoute isLoggedIn={isLoggedIn}>
+              <Logout onLogout={() => handleLogout()} isLoggedIn={isLoggedIn} navigate={navigate} />
+            </ProtectedRoute>
+          }/>
+          <Route path={routePaths.signin} element={
+            <>
+              <Header linkText="Sign up" linkPath={routePaths.signup} currentScreen="login" />
+              <Login onSubmit={handleLogin} />
+            </>
+          } />
+          <Route path={routePaths.signup} element={
+            <>
+              <Header linkText="Log in" linkPath={routePaths.signin} currentScreen="signup" />
+              <Register onSubmit={handleRegister} />
+            </>
+          } />
+          <Route path="/" element={
+            <>
+              <ProtectedRoute isLoggedIn={isLoggedIn}>
+                <Header linkText="Log Out" linkPath={routePaths.logout} currentScreen="main" userEmail={currentUser.email} />
+                <Main
+                  onEditProfileClick={handleEditProfileClick}
+                  onEditAvatarClick={handleEditAvatarClick}
+                  onAddPlaceClick={handleAddPlaceClick}
+                  cards={cards}
+                  onCardClick={handleCardClick}
+                  onCardLike={handleCardLike}
+                  onCardDelete={handleCardDelete}
+                />
+                <Footer />
 
-          </ProtectedRoute>
-        </Switch>
+              </ProtectedRoute>
+            </>
+          } />
+        </Routes>
 
         <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUserUpdate={handleUpdateUser} />
         <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlaceSubmit={handleAddPlaceSubmit} />

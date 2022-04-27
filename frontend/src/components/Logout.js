@@ -6,7 +6,7 @@ const Logout = (props) => {
     if (typeof props.onLogout === 'function') {
       props.onLogout();
     }
-    props.history.push(routePaths.signin);
+    props.navigate(routePaths.signin);
   }, [props]);
 
   return null;

@@ -1,7 +1,7 @@
 import {
   popupClassList as popupClasses,
   formClassList as formClasses
-} from '../utils/constants';
+} from '../../utils/constants';
 
 function PopupWithForm(props) {
   const sectionClassName = `${popupClasses.popupSectionClass} ${

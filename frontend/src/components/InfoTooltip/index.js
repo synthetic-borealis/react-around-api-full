@@ -2,7 +2,7 @@ import {
   popupClassList as popupClasses,
   tooltipClasses,
   tooltipContainerSelector
-} from "../utils/constants";
+} from "../../utils/constants";
 
 const InfoTooltip = (props) => {
   const sectionOpenClass = `${props.isOpen ? popupClasses.openedPopupSection : ''}`;

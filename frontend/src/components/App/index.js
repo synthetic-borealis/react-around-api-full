@@ -1,31 +1,31 @@
 // Components
 import { Route, Routes, useNavigate } from 'react-router-dom';
-import ProtectedRoute from './ProtectedRoute';
-import Header from './Header';
-import Main from './Main';
-import Footer from './Footer';
-import PopupWithForm from './PopupWithForm';
-import ImagePopup from './ImagePopup';
-import EditProfilePopup from './EditProfilePopup';
-import EditAvatarPopup from './EditAvatarPopup';
-import AddPlacePopup from './AddPlacePopup';
-import InfoTooltip from './InfoTooltip';
-import Login from './Login';
-import Register from './Register';
-import Logout from './Logout';
+import ProtectedRoute from '../ProtectedRoute';
+import Header from '../Header';
+import Footer from '../Footer';
+import PopupWithForm from '../PopupWithForm';
+import ImagePopup from '../ImagePopup';
+import EditProfilePopup from '../EditProfilePopup';
+import EditAvatarPopup from '../EditAvatarPopup';
+import AddPlacePopup from '../AddPlacePopup';
+import InfoTooltip from '../InfoTooltip';
+import Home from '../../routes/Home';
+import Login from '../../routes/Login';
+import Register from '../../routes/Register';
+import Logout from '../../routes/Logout';
 
 // Contexts
-import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 // API requests
-import * as auth from '../utils/auth';
+import * as auth from '../../utils/auth';
 
 // Constants
 import {
   routePaths,
   popupTransitionDuration,
   tooltipMessages
-} from '../utils/constants';
+} from '../../utils/constants';
 
 import React from 'react';
 
@@ -238,7 +238,7 @@ function App() {
             <>
               <ProtectedRoute isLoggedIn={isLoggedIn}>
                 <Header linkText="Log Out" linkPath={routePaths.logout} currentScreen="main" userEmail={currentUser.email} />
-                <Main
+                <Home
                   onEditProfileClick={handleEditProfileClick}
                   onEditAvatarClick={handleEditAvatarClick}
                   onAddPlaceClick={handleAddPlaceClick}

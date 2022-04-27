@@ -1,6 +1,6 @@
 import {
   popupClassList as popupClasses,
-} from '../utils/constants';
+} from '../../utils/constants';
 
 function ImagePopup(props) {
   const className = `${popupClasses.popupSectionClass} ${popupClasses.popupTypeClassPrefix}image ${props.isOpen ? popupClasses.openedPopupSection : ""}`;

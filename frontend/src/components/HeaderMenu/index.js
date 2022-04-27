@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { menuClasses } from '../utils/constants';
+import { menuClasses } from '../../utils/constants';
 
 const HeaderMenu = ({linkText, linkPath, userEmail, className, ...props}) => {
   return (

@@ -1,5 +1,5 @@
 import React from 'react';
-import { routePaths } from '../utils/constants';
+import { routePaths } from '../../utils/constants';
 
 const Logout = (props) => {
   React.useEffect(() => {

@@ -21,7 +21,7 @@ const notFoundRoutes = require('./middleware/not-found-routes');
 
 require('dotenv').config();
 
-const { PORT = 3000 } = process.env;
+const { PORT = 4000 } = process.env;
 const app = express();
 
 app.options('*', cors());

@@ -72,7 +72,7 @@ const routePaths = {
 };
 
 // API Options
-const baseUrl = 'https://api.synthetic-borealis.students.nomoreparties.site';
+const baseUrl = 'http://localhost:4000';
 const baseHeaders = {
   'Accept': 'application/json',
   'Content-Type': 'application/json'

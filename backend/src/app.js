@@ -18,7 +18,7 @@ const auth = require('./middleware/auth');
 const error = require('./middleware/error');
 const { requestLogger, errorLogger } = require('./middleware/logger');
 const notFoundRoutes = require('./middleware/not-found-routes');
-const {dbUrl} = require('./utils/constants');
+const { dbUrl } = require('./utils/constants');
 
 require('dotenv').config();
 

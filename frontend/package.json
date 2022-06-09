@@ -1,7 +1,7 @@
 {
   "name": "around-react",
   "version": "0.1.0",
-  "homepage": "./",
+  "homepage": "https://synthetic-borealis.github.io/react-around-api-full/",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.4",
@@ -19,8 +19,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "init-ssh": "ssh-agent -s && ssh-add",
-    "deploy": "npm run build && scp -r -i ~/.ssh/id_rsa ./build/* snip.coloured@synthetic-borealis.students.nomoreparties.site:/home/snip.coloured/around-frontend"
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [

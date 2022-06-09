@@ -18,6 +18,7 @@ const auth = require('./middleware/auth');
 const error = require('./middleware/error');
 const { requestLogger, errorLogger } = require('./middleware/logger');
 const notFoundRoutes = require('./middleware/not-found-routes');
+const {dbUrl} = require('./utils/constants');
 
 require('dotenv').config();
 
@@ -38,7 +39,7 @@ app.use(limiter);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-mongoose.connect('mongodb://localhost:27017/aroundb');
+mongoose.connect(dbUrl);
 
 app.use(helmet());
 

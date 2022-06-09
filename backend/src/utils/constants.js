@@ -16,4 +16,7 @@ const messageStrings = {
 const { NODE_ENV, JWT_SECRET } = process.env;
 const secretKey = NODE_ENV === 'production' ? JWT_SECRET : 'some-secret-key';
 
-module.exports = { urlRegex, messageStrings, secretKey };
+// const dbUrl = 'mongodb://localhost:27017/aroundb';
+const {dbUrl} = require('./secret-constants');
+
+module.exports = { urlRegex, messageStrings, secretKey, dbUrl };

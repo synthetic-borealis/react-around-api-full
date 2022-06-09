@@ -1,0 +1,31 @@
+{
+  "files": {
+    "main.css": "/react-around-api-full/static/css/main.f9bf27cc.css",
+    "main.js": "/react-around-api-full/static/js/main.5ca9f898.js",
+    "static/js/787.1c78f32b.chunk.js": "/react-around-api-full/static/js/787.1c78f32b.chunk.js",
+    "static/media/Inter-Medium.woff?v=3.19": "/react-around-api-full/static/media/Inter-Medium.9053572c46aeb4b16caa.woff",
+    "static/media/Inter-Black.woff?v=3.19": "/react-around-api-full/static/media/Inter-Black.c6938660eec019fefd68.woff",
+    "static/media/Inter-Regular.woff?v=3.19": "/react-around-api-full/static/media/Inter-Regular.8c206db99195777c6769.woff",
+    "static/media/Inter-Medium.woff2?v=3.19": "/react-around-api-full/static/media/Inter-Medium.293fd13dbca5a3e450ef.woff2",
+    "static/media/Inter-Black.woff2?v=3.19": "/react-around-api-full/static/media/Inter-Black.15ca31c0a2a68f76d2d1.woff2",
+    "static/media/Inter-Regular.woff2?v=3.19": "/react-around-api-full/static/media/Inter-Regular.c8ba52b05a9ef10f4758.woff2",
+    "static/media/logo.svg": "/react-around-api-full/static/media/logo.4e8e0a1d604782a0dff8e5b1a5441e4d.svg",
+    "static/media/icon-heart.svg": "/react-around-api-full/static/media/icon-heart.3826c074a1b94b101e38.svg",
+    "index.html": "/react-around-api-full/index.html",
+    "static/media/icon-trash.svg": "/react-around-api-full/static/media/icon-trash.8cb59aa98088a1653f62.svg",
+    "static/media/icon-error.svg": "/react-around-api-full/static/media/icon-error.df8eddf661ff88f2d0ef.svg",
+    "static/media/icon-success.svg": "/react-around-api-full/static/media/icon-success.1b6082f862eac35e2514.svg",
+    "static/media/icon-heart_filled.svg": "/react-around-api-full/static/media/icon-heart_filled.226461bd64622361ffb2.svg",
+    "static/media/icon-close.svg": "/react-around-api-full/static/media/icon-close.1f0b5bb9b7f510e19098.svg",
+    "static/media/icon-menu.svg": "/react-around-api-full/static/media/icon-menu.a46d5c1c53c02d60fc80.svg",
+    "static/media/icon-edit.svg": "/react-around-api-full/static/media/icon-edit.a086f758840ae814ecde.svg",
+    "static/media/icon-add.svg": "/react-around-api-full/static/media/icon-add.d86bb2edc2f6eadb96b7.svg",
+    "main.f9bf27cc.css.map": "/react-around-api-full/static/css/main.f9bf27cc.css.map",
+    "main.5ca9f898.js.map": "/react-around-api-full/static/js/main.5ca9f898.js.map",
+    "787.1c78f32b.chunk.js.map": "/react-around-api-full/static/js/787.1c78f32b.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f9bf27cc.css",
+    "static/js/main.5ca9f898.js"
+  ]
+}

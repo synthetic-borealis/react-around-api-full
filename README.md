@@ -46,5 +46,4 @@ Around the U.S. is an image sharing site for travellers, complete with a backend
 ### Project Related
 * [Backend Code](https://github.com/synthetic-borealis/react-around-api-full/tree/main/backend)
 * [Frontend Code](https://github.com/synthetic-borealis/react-around-api-full/tree/main/frontend)
-* [Live Site](https://www.synthetic-borealis.students.nomoreparties.site/)
-* [API server](https://api.synthetic-borealis.students.nomoreparties.site/)
+* [Live Site](https://synthetic-borealis.github.io/react-around-api-full/)

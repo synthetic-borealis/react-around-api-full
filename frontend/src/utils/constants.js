@@ -72,7 +72,8 @@ const routePaths = {
 };
 
 // API Options
-const baseUrl = 'http://localhost:4000';
+// const baseUrl = 'http://localhost:4000';
+const baseUrl = 'https://api.the-news-explorer.tk';
 const baseHeaders = {
   'Accept': 'application/json',
   'Content-Type': 'application/json'

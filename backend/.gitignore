@@ -1,21 +1,14 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-
-# Dependency directory
 node_modules
-
-# Optional npm cache directory
-.npm
-
-# System files and IDE settings folders
-.DS_Store
-.idea
-.vscode
-
-# Environment configuration
-.env
-
-# Secret stuff
+dist
+validation-log.json
+*.log
 secret-constants.js
+
+# Yarn v2+
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

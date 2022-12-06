@@ -14,6 +14,7 @@
 *.lock text
 *.html text
 *.css text
+*.yml
 .gitignore text
 .gitattributes text
 .eslintrc text
